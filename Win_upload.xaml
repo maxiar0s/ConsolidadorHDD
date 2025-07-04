@@ -1,0 +1,64 @@
+﻿<Window x:Class="ConsolidadorHDD.Win_upload"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ConsolidadorHDD"
+        mc:Ignorable="d"
+        Title="Win_upload" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Panel de Configuración del NAS y Botones de Acción -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="NAS IP/Hostname:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox x:Name="txtNasIp" Width="150" Text="nas.filantropiacortessolari.cl" Margin="0,0,10,0"/>
+            <TextBlock Text="Session ID (SID):" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox x:Name="txtSessionId" Width="200" Text="p28kz7qa" Margin="0,0,10,0"/>
+            <TextBlock Text="Destination Path:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox x:Name="txtDestinationPath" Width="200" Text="/Multimedia/Samples" Margin="0,0,10,0"/>
+            <Button Content="Select Files" Click="SelectFiles_Click" Margin="0,0,10,0"/>
+            <Button Content="Upload Files" Click="UploadFiles_Click"/>
+        </StackPanel>
+
+        <!-- ListView para Mostrar los Archivos y su Progreso -->
+        <ListView Grid.Row="1" x:Name="lvFiles" Margin="0,0,0,10">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="File Name" Width="250" DisplayMemberBinding="{Binding FileName}"/>
+                    <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                    <GridViewColumn Header="Progress">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ProgressBar Value="{Binding ProgressPercentage}" Maximum="100" Width="150" Height="20" Margin="5"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Progress (%)" Width="80" DisplayMemberBinding="{Binding ProgressPercentage, StringFormat={}{0:F0}%}"/>
+                    <GridViewColumn Header="Uploaded (MB)">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding UploadedMB, StringFormat={}{0:F2}}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Total (MB)">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TotalMB, StringFormat={}{0:F2}}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- Barra de Estado General -->
+        <TextBlock Grid.Row="2" x:Name="txtOverallStatus" Text="Ready" Margin="0,5,0,0" FontWeight="Bold"/>
+    </Grid>
+
+</Window>

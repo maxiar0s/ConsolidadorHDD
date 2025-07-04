@@ -47,10 +47,21 @@
                        AcceptsReturn="True"
                        HorizontalScrollBarVisibility="Disabled"
                        VerticalScrollBarVisibility="Auto"></TextBox>
-            
-            
-            <Button Grid.Column="1" Grid.Row="3" x:Name="btnExportar" IsEnabled="False" Click="Button_Click"  Margin="228,0,25,10" Grid.ColumnSpan="2">Exportar resultado</Button>
-            <Button Grid.Column="1" Grid.Row="4" x:Name="btnProcess" Click="BtnProcess_Click" Margin="228,0,25,10" Grid.ColumnSpan="2">Procesar</Button>
+            <Grid Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Grid.Column="1" x:Name="btnImportar"                   Click="BtnImport_Click"  Margin="5" >Importar</Button>
+                <Button Grid.Row="1" Grid.Column="1" x:Name="btnExportar" IsEnabled="False" Click="Button_Click"  Margin="5" >Exportar resultado</Button>
+                <Button Grid.Row="2" Grid.Column="1" x:Name="btnProcess"                    Click="BtnProcess_Click" Margin="5" >Procesar</Button>
+
+            </Grid>
 
         </Grid>
         <Grid Grid.Column="1" Grid.Row="2">

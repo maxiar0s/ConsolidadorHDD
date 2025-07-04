@@ -1,9 +1,15 @@
 ﻿using Microsoft.Win32;
 using Npgsql;
+using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.IO;
+using System.Linq;
+using System.Management;
+using System.Reflection;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,11 +21,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Management;
-using System.Linq;
-using System.Security.Policy;
-using System;
-using System.Collections.Concurrent;
 
 namespace ConsolidadorHDD
 {
@@ -202,6 +203,82 @@ namespace ConsolidadorHDD
                 txtProgress.Text = $"Buscando repetidos : {value} de {_counter}";
             }
         }
+
+
+        private async void BtnImport_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                Title = "Seleccione el archivo a importar ...",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+            };
+
+            //openFolderDialog.Multiselect = true;
+
+            StringBuilder sb = new StringBuilder();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                sb.AppendLine($"List of all subdirectories in the selected folders :");
+                sb.AppendLine();
+
+
+                
+                string file = openFileDialog.FileName;
+                Debug.WriteLine(file);
+
+                fileList.Items.Clear();
+                List<FileData> datos = new List<FileData>();
+                try
+                {
+
+                    // Crear un objeto StreamReader para leer el archivo
+                    using (StreamReader sr = new StreamReader(file))
+                    {
+
+                        string linea;
+                        sr.ReadLine();
+                        // Leer el archivo línea por línea
+                        while ((linea = sr.ReadLine()) != null)
+                        {
+                            var fileLineData = linea.Split(",");
+                            long size = 0;
+                            bool success = Int64.TryParse(fileLineData[6], out size);
+
+                            var newFile = new FileData { 
+                                isNas= fileLineData[0] == "True" ? true : false,
+                                isRepited= fileLineData[1] == "True" ? true : false,
+                                Nombre= fileLineData[2],
+                                Extension= fileLineData[3],
+                                Directorios = fileLineData[4],
+                                Hash = fileLineData[5],
+                                Tamaño = success ? size : 0,
+                                Tamañostr = success ? FileSizeExtension.ToHumanReadableString(size): ""
+                            };
+
+                            datos.Add(newFile);
+                            fileList.Items.Add(newFile);
+
+                            Debug.WriteLine(linea); // Imprimir cada línea en la consola
+                        }
+                    } // El bloque using asegura que el archivo se cierre automáticamente
+                }
+                catch (Exception err)
+                {
+                    Console.WriteLine("Error al abrir o leer el archivo: " + err.Message);
+                }
+
+                resultados = datos;
+
+            }
+            else
+            {
+                sb.AppendLine("No folder selected.");
+                sb.AppendLine("Either cancel button was clicked or dialog was closed");
+            }
+            Console.WriteLine(sb.ToString());
+            
+        }
+
 
         private async void BtnProcess_Click(object sender, RoutedEventArgs e) {
             txtDetails.Text = "";
@@ -441,6 +518,8 @@ namespace ConsolidadorHDD
         {
             Debug.WriteLine("Selecciono");
             Debug.WriteLine(CBStorageId.SelectedValue);
+            Win_upload nuevaVentana = new Win_upload();
+            nuevaVentana.Show();
         }
 
         private async void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
