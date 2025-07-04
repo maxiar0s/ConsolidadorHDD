@@ -39,7 +39,10 @@ namespace ConsolidadorHDD.utils
                 {
                     return true; // Siempre devuelve true para aceptar cualquier certificado
                 };
-
+            //TODO: lo que hay que cambiar para subir
+            //dest_path = directorio destino
+            //progress = 
+            //id de sesion = sid
 
 
             var client = new HttpClient(handler);

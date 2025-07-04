@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ConsolidadorHDD"
         mc:Ignorable="d"
-        Title="Win_upload" Height="450" Width="800">
+        Title="Win_upload" Height="471" Width="1102">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
