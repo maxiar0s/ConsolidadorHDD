@@ -4,61 +4,274 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ConsolidadorHDD"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:StatesEnum="clr-namespace:ConsolidadorHDD.model;assembly=ConsolidadorHDD"
         mc:Ignorable="d"
-        Title="Win_upload" Height="471" Width="1102">
-    <Grid Margin="10">
+        Title="Win_upload" Height="1080" Width="1920">
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="300"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!-- formulario de datos NAS -->
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
 
-        <!-- Panel de Configuración del NAS y Botones de Acción -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-            <TextBlock Text="NAS IP/Hostname:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox x:Name="txtNasIp" Width="150" Text="nas.filantropiacortessolari.cl" Margin="0,0,10,0"/>
-            <TextBlock Text="Session ID (SID):" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox x:Name="txtSessionId" Width="200" Text="p28kz7qa" Margin="0,0,10,0"/>
-            <TextBlock Text="Destination Path:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox x:Name="txtDestinationPath" Width="200" Text="/Multimedia/Samples" Margin="0,0,10,0"/>
-            <Button Content="Select Files" Click="SelectFiles_Click" Margin="0,0,10,0"/>
-            <Button Content="Upload Files" Click="UploadFiles_Click"/>
-        </StackPanel>
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="NAS" Margin="1" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
 
-        <!-- ListView para Mostrar los Archivos y su Progreso -->
-        <ListView Grid.Row="1" x:Name="lvFiles" Margin="0,0,0,10">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="File Name" Width="250" DisplayMemberBinding="{Binding FileName}"/>
-                    <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}"/>
-                    <GridViewColumn Header="Progress">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <ProgressBar Value="{Binding ProgressPercentage}" Maximum="100" Width="150" Height="20" Margin="5"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Progress (%)" Width="80" DisplayMemberBinding="{Binding ProgressPercentage, StringFormat={}{0:F0}%}"/>
-                    <GridViewColumn Header="Uploaded (MB)">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding UploadedMB, StringFormat={}{0:F2}}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Total (MB)">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding TotalMB, StringFormat={}{0:F2}}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="NAS IP/Hostname:"  Margin="5" VerticalAlignment="Center"/>
+                <TextBox   Grid.Row="1" Grid.Column="1" x:Name="txtNasIp" Text="nas.filantropiacortessolari.cl" Margin="5" VerticalAlignment="Center"/>
 
-        <!-- Barra de Estado General -->
-        <TextBlock Grid.Row="2" x:Name="txtOverallStatus" Text="Ready" Margin="0,5,0,0" FontWeight="Bold"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Session ID (SID):" Margin="5" VerticalAlignment="Center" />
+                <TextBox   Grid.Row="2" Grid.Column="1" x:Name="txtSessionId" Text="eea6hr7h" Margin="5" VerticalAlignment="Center" />
+
+                <TextBlock Grid.Row="3" Grid.Column="0"  Text="Path principal en NAS:" Margin="5"  VerticalAlignment="Center"/>
+                <TextBox   Grid.Row="3" Grid.Column="1"  x:Name="txtDestinationPath" Text="/Multimedia" Margin="5" VerticalAlignment="Center" />
+
+                <TextBlock Grid.Row="4" Grid.Column="0"  Text="Path Secundario NAS:" Margin="5"  VerticalAlignment="Center"/>
+                <TextBox   Grid.Row="4" Grid.Column="1"  x:Name="txtSubDestinationPath" Text="HDD/TEST_02" Margin="5" VerticalAlignment="Center" />
+
+
+            </Grid>
+            <!-- formulario de opciones de archivos-->
+            <Grid Grid.Column="1" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="30"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Opciones de archivos" Margin="1" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Incluir repetidos en NAS:"  Margin="5" VerticalAlignment="Center"/>
+                <CheckBox Grid.Row="1" Grid.Column="1" Margin="5" VerticalAlignment="Center"></CheckBox>
+                
+                
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Incluir repetidos en el mismo Disco:"  Margin="5" VerticalAlignment="Center"/>
+                <CheckBox Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center"></CheckBox>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Extenciones selecccionadas:"   Margin="5"  VerticalAlignment="Center"/>
+                <CheckBox  Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center"></CheckBox>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="quitar que empieza por:"   Margin="5"  VerticalAlignment="Center"/>
+                <TextBox   x:Name="txtStartWithOut" Grid.Row="4" Grid.Column="1" Text="._" Margin="5" VerticalAlignment="Center"></TextBox>
+
+
+                <ListView Grid.Row="1" Grid.Column="2" Grid.RowSpan="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" x:Name="ListadoExtenciones"
+                          Margin="5" SelectionChanged="ListadoExtenciones_SelectionChanged">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Seleccionado" Width="80">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Margin="5, 0" IsChecked="{Binding Selected}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Extencion" Width="NaN" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Margin="5, 0" Text="{Binding Extencion}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <Button x:Name="btnFiltrar" Grid.Row="6" Grid.Column="2" Content="Filtrar" Click="btnFiltrar_Click" Margin="5"/>
+
+            </Grid>
+            <!-- formulario de opciones de Proceso -->
+            <Grid Grid.Column="3" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Opciones de Proceso" Margin="1" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Máximos subidas simultaneas" Margin="5" VerticalAlignment="Center"/>
+                <TextBox   Grid.Row="1" Grid.Column="1" x:Name="txtMaxThread" Text="16" Margin="5" VerticalAlignment="Center" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Máximos subidas simultaneas" Margin="5" VerticalAlignment="Center"/>
+                <TextBox   Grid.Row="2" Grid.Column="1" x:Name="txtMaxRetry" Text="3" Margin="5" VerticalAlignment="Center" />
+
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Proceso Id:"  Margin="5" VerticalAlignment="Center"/>
+                <TextBox   Grid.Row="3" Grid.Column="1" Text="" Margin="5" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Fecha del proceso:" Margin="5" VerticalAlignment="Center" />
+                <TextBox   Grid.Row="4" Grid.Column="1" Text="" Margin="5" VerticalAlignment="Center" />
+
+                <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Opciones de Disco" Margin="1" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Disco ID" Margin="5" VerticalAlignment="Center"/>
+                    <TextBox   Grid.Row="1" Grid.Column="1" Text="" Margin="5" VerticalAlignment="Center" />
+                </Grid>
+
+                <Button x:Name="btnSubir" Grid.Row="6" Grid.Column="1" Content="Subir Archivos" Click="btnSubir_Click" Margin="5"/>
+                <Button x:Name="btnCancelarSubir" Visibility="Hidden" Grid.Row="6" Grid.Column="1" Content="Cancelar" Click="btnCancelarSubir_Click" Margin="5"/>
+                <Button x:Name="btnReSubir" Visibility="Hidden"  Grid.Row="7" Grid.Column="0" Content="Reintentar Archivos con error" Click="btnReSubir_Click" Margin="5"/>
+
+            </Grid>
+            <!-- formulario de opciones de Disco -->
+
+
+        </Grid>
+
+        <Grid Margin="10" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Panel de Configuración del NAS y Botones de Acción -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+
+
+                <Button Content="Select Files" Click="SelectFiles_Click" Margin="0,0,10,0"/>
+                <Button x:Name="btnUpload" Content="Upload Files" Click="UploadFiles_Click"/>
+
+                <TextBlock x:Name="txtMensaje" Text="0 archivos seleccionados" Margin="5,0,0,0"></TextBlock>
+                <TextBlock x:Name="txtmsgSubidos" Text="0 archivos seleccionados" Margin="5,0,0,0"></TextBlock>
+
+            </StackPanel>
+
+            <!-- ListView para Mostrar los Archivos y su Progreso -->
+            <ListView Grid.Row="1" x:Name="lvFiles" Margin="0,0,0,10" DataContextChanged="lvFiles_DataContextChanged">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}"  >
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=Status}" Value="Completed" />
+                                    <Condition Binding="{Binding Path=IsApproved}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="LightGreen" />
+                                <Setter Property="Foreground" Value="DarkGreen" />
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding Path=Status}" Value="0">
+                                <Setter Property="Background" Value="LightGreen" />
+                                <Setter Property="Foreground" Value="DarkGreen" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=Status}" Value="2">
+                                <Setter Property="Background" Value="LightBlue" />
+                                <Setter Property="Foreground" Value="Blue" />
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding Path=Status}" Value="4">
+                                <Setter Property="Background" Value="Red" />
+                                <Setter Property="Foreground" Value="DarkRed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=Status}" Value="5">
+                                <Setter Property="Background" Value="Red" />
+                                <Setter Property="Foreground" Value="DarkRed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=Status}" Value="6">
+                                <Setter Property="Background" Value="LightPink" />
+                                <Setter Property="Foreground" Value="DarkRed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=Status}" Value="7">
+                                <Setter Property="Background" Value="LightPink" />
+                                <Setter Property="Foreground" Value="DarkRed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=Status}" Value="7">
+                                <Setter Property="Background" Value="LightCoral" />
+                                <Setter Property="Foreground" Value="DarkRed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="File Name" Width="250" DisplayMemberBinding="{Binding FileName}"/>
+                        <GridViewColumn Header="Estado" Width="100" DisplayMemberBinding="{Binding StatusMSG}"/>
+                        <GridViewColumn Header="Progress">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ProgressBar Value="{Binding ProgressPercentage}" Maximum="100" Width="150" Height="20" Margin="5"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Progress (%)" Width="80" DisplayMemberBinding="{Binding ProgressPercentage, StringFormat={}{0:F0}%}"/>
+                        <GridViewColumn Header="Uploaded (MB)">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding UploadedMB, StringFormat={}{0:F2}}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Total (MB)">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding TotalMB, StringFormat={}{0:F2}}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Checksum" Width="250" DisplayMemberBinding="{Binding Hash}"/>
+                        <GridViewColumn Header="En el NAS" Width="250" DisplayMemberBinding="{Binding IsNAS}"/>
+                        <GridViewColumn Header="Repetido " Width="250" DisplayMemberBinding="{Binding IsRepited}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- Barra de Estado General -->
+            <TextBlock Grid.Row="2" x:Name="txtOverallStatus" Text="Ready" Margin="0,5,0,0" FontWeight="Bold"/>
+        </Grid>
     </Grid>
+
 
 </Window>

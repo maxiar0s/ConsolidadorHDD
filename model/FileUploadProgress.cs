@@ -2,15 +2,28 @@
 using System.IO; 
 
 namespace ConsolidadorHDD.model
-{
+{ 
+
     public class FileUploadProgress : INotifyPropertyChanged
     {
         private string _fileName;
         private string _filePath;
-        private string _status;
+        private Estados _status;
+        private string _statusMSG;
+
         private double _progressPercentage;
         private long _uploadedBytes;
         private long _totalBytes;
+
+        private long?   _tamaño;
+        //private string? _tamañostr;
+        private string? _extension;
+        private string? _hash;
+        private bool?   _isNas;
+        private bool?   _isRepited;
+
+
+
 
         // Nombre del archivo (solo el nombre, sin ruta)
         public string FileName
@@ -41,7 +54,7 @@ namespace ConsolidadorHDD.model
         }
 
         // Estado actual de la subida (ej. "En cola", "Subiendo...", "Completado", "Error")
-        public string Status
+        public Estados Status
         {
             get => _status;
             set
@@ -53,6 +66,20 @@ namespace ConsolidadorHDD.model
                 }
             }
         }
+
+        public string StatusMSG
+        {
+            get => _statusMSG;
+            set
+            {
+                if (_statusMSG != value)
+                {
+                    _statusMSG = value;
+                    OnPropertyChanged(nameof(StatusMSG));
+                }
+            }
+        }
+
 
         // Porcentaje de progreso de la subida (0-100)
         public double ProgressPercentage
@@ -97,6 +124,61 @@ namespace ConsolidadorHDD.model
                 }
             }
         }
+
+        public long? Tamaño
+        {
+            get => _tamaño;
+            set
+            {
+                if (_tamaño != value)
+                {
+                    _tamaño = value;
+                    OnPropertyChanged(nameof(Tamaño));
+                }
+            }
+        }
+
+        public string? Hash
+        {
+            get => _hash;
+            set
+            {
+                if (_hash != value)
+                {
+                    _hash = value;
+                    OnPropertyChanged(nameof(Hash));
+                }
+            }
+        }
+
+        public bool? IsNAS
+        {
+            get => _isNas;
+            set
+            {
+                if (_isNas != value)
+                {
+                    _isNas = value;
+                    OnPropertyChanged(nameof(IsNAS));
+                }
+            }
+        }
+
+        public bool? IsRepited
+        {
+            get => _isRepited;
+            set
+            {
+                if (_isRepited != value)
+                {
+                    _isRepited = value;
+                    OnPropertyChanged(nameof(IsRepited));
+                }
+            }
+        }
+
+
+
 
         // Propiedad calculada para mostrar bytes subidos en MegaBytes
         public double UploadedMB => UploadedBytes / (1024.0 * 1024.0);

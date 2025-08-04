@@ -11,7 +11,7 @@ namespace ConsolidadorHDD
 {
     public class DataBase
     {
-        public static string connectionString = "Host=144.22.41.245;Username=siroe;Password=siroe;Database=DBNasFiles";
+        public static string connectionString = "";
 
         public static async void getProcess() {
             Debug.WriteLine("empecemos");

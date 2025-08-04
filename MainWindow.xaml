@@ -47,7 +47,7 @@
                        AcceptsReturn="True"
                        HorizontalScrollBarVisibility="Disabled"
                        VerticalScrollBarVisibility="Auto"></TextBox>
-            <Grid Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <Grid Grid.Column="1" Grid.Row="2" Grid.RowSpan="3" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
@@ -56,10 +56,12 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Button Grid.Row="0" Grid.Column="1" x:Name="btnImportar"                   Click="BtnImport_Click"  Margin="5" >Importar</Button>
                 <Button Grid.Row="1" Grid.Column="1" x:Name="btnExportar" IsEnabled="False" Click="Button_Click"  Margin="5" >Exportar resultado</Button>
                 <Button Grid.Row="2" Grid.Column="1" x:Name="btnProcess"                    Click="BtnProcess_Click" Margin="5" >Procesar</Button>
+                <Button Grid.Row="3" Grid.Column="1" x:Name="btnUpload"   IsEnabled="False" Click="BtnUpload_Click" Margin="5" >Subir Archivos</Button>
 
             </Grid>
 

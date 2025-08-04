@@ -147,7 +147,7 @@ namespace ConsolidadorHDD
             var serial = getDiskSerial(driveInfo.Name);
 
             txtDiskId.Text = $"Nombre:{driveInfo.Name}, Volumen:{driveInfo.VolumeLabel}, Formato:{driveInfo.DriveFormat}, Serial:{serial}:";
-
+            
 
         }
 
@@ -267,6 +267,10 @@ namespace ConsolidadorHDD
                     Console.WriteLine("Error al abrir o leer el archivo: " + err.Message);
                 }
 
+                if (datos.Count > 0) {
+                    btnUpload.IsEnabled = true;
+                }
+
                 resultados = datos;
 
             }
@@ -313,6 +317,7 @@ namespace ConsolidadorHDD
             {
                 fileList.Items.Add(file);
             }
+            btnUpload.IsEnabled = true;
             btnExportar.IsEnabled = true;
         }
 
@@ -552,11 +557,14 @@ namespace ConsolidadorHDD
                 Debug.WriteLine("error!!!", ex.Message);
             }
 
+        }
 
-
-
-            //var pepe = await DataBase.getHashNas("pepito");
-            //Debug.WriteLine(pepe);
+        private void BtnUpload_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("Selecciono");
+            Debug.WriteLine(CBStorageId.SelectedValue);
+            Win_upload nuevaVentana = new Win_upload(resultados);
+            nuevaVentana.Show();
         }
     }
 
