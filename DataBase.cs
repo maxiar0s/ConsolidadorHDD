@@ -11,7 +11,7 @@ namespace ConsolidadorHDD
 {
     public class DataBase
     {
-        public static string connectionString = "";
+        public static string connectionString = ""; 
 
         public static async void getProcess() {
             Debug.WriteLine("empecemos");

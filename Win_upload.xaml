@@ -28,11 +28,12 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
+
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
@@ -49,18 +50,55 @@
 
                 <TextBlock Grid.Row="4" Grid.Column="0"  Text="Path Secundario NAS:" Margin="5"  VerticalAlignment="Center"/>
                 <TextBox   Grid.Row="4" Grid.Column="1"  x:Name="txtSubDestinationPath" Text="HDD/TEST_02" Margin="5" VerticalAlignment="Center" />
+                <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition  Width="*"></ColumnDefinition>
+                        <ColumnDefinition  Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="30"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0"  Text="Total Archivos:" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0"  Text="Total Subidos Exitosos:" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0"  Text="Total Archivos Cancelados:" Margin="5"  VerticalAlignment="Center"/>
 
+                    <TextBlock x:Name="txtTodos" Grid.Row="0" Grid.Column="1"  Text="0" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtSubidos" Grid.Row="1" Grid.Column="1"  Text="0" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtCancelados" Grid.Row="2" Grid.Column="1"  Text="0" Margin="5"  VerticalAlignment="Center"/>
+
+                    <TextBlock Grid.Row="0" Grid.Column="2"  Text="Archivos con error:" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtError" Grid.Row="0" Grid.Column="3"  Text="0" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2"  Text="Error de red:" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtErrornet" Grid.Row="1" Grid.Column="3"  Text="0" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2"  Text="Error de nombre:" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtErrorName"  Grid.Row="2" Grid.Column="3"  Text="0" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="3" Grid.Column="2"  Text="Error de tamaño:" Margin="5"  VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txtErrorSize"  Grid.Row="3" Grid.Column="3"  Text="0" Margin="5"  VerticalAlignment="Center"/>
+
+                </Grid>
 
             </Grid>
             <!-- formulario de opciones de archivos-->
             <Grid Grid.Column="1" Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
+                    <ColumnDefinition Width="40"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
@@ -85,8 +123,12 @@
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="quitar que empieza por:"   Margin="5"  VerticalAlignment="Center"/>
                 <TextBox   x:Name="txtStartWithOut" Grid.Row="4" Grid.Column="1" Text="._" Margin="5" VerticalAlignment="Center"></TextBox>
 
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Letra del disco:"   Margin="5"  VerticalAlignment="Center"/>
+                <TextBox   x:Name="txtLetraDisco" Grid.Row="5" Grid.Column="1" Text="D:\" Margin="5" VerticalAlignment="Center"></TextBox>
 
-                <ListView Grid.Row="1" Grid.Column="2" Grid.RowSpan="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" x:Name="ListadoExtenciones"
+
+
+                <ListView Grid.Row="1" Grid.Column="2" Grid.RowSpan="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" x:Name="ListadoExtenciones"
                           Margin="5" SelectionChanged="ListadoExtenciones_SelectionChanged">
                     <ListView.View>
                         <GridView>
@@ -108,7 +150,7 @@
                     </ListView.View>
                 </ListView>
 
-                <Button x:Name="btnFiltrar" Grid.Row="6" Grid.Column="2" Content="Filtrar" Click="btnFiltrar_Click" Margin="5"/>
+                <Button x:Name="btnFiltrar" Grid.Row="7" Grid.Column="2" Content="Filtrar" Click="btnFiltrar_Click" Margin="5"/>
 
             </Grid>
             <!-- formulario de opciones de Proceso -->
@@ -269,7 +311,7 @@
             </ListView>
 
             <!-- Barra de Estado General -->
-            <TextBlock Grid.Row="2" x:Name="txtOverallStatus" Text="Ready" Margin="0,5,0,0" FontWeight="Bold"/>
+            <TextBlock Grid.Row="2" x:Name="txtOverallStatus" Text="LIsto!!!" Margin="0,5,0,0" FontWeight="Bold"/>
         </Grid>
     </Grid>
 

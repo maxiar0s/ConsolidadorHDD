@@ -45,7 +45,7 @@ namespace ConsolidadorHDD
         private static List<FileData> HDDDataWin = new List<FileData>();
         private static List<SelectedExtencion> _extencionSelection = new List<SelectedExtencion>();
 
-
+        private static int Intentos = 1;
 
         public Win_upload()
         {
@@ -171,9 +171,9 @@ namespace ConsolidadorHDD
             } else {
                 archivosUpload = FilesToUpload;
             }
+            txtTodos.Text = FilesToUpload.Count().ToString();
 
-
-                foreach (var fileProgress in archivosUpload)
+            foreach (var fileProgress in archivosUpload)
                 {
                     fileProgress.Status = Estados.QUEUED;
                     fileProgress.StatusMSG = "En cola";
@@ -198,12 +198,22 @@ namespace ConsolidadorHDD
                                     var resultNAME = FilesToUpload.Where(x => x.Status == Estados.NAMEERROR).Count();
                                     var resultSIZE = FilesToUpload.Where(x => x.Status == Estados.SIZEERROR).Count();
                                     var resultCANCEL = FilesToUpload.Where(x => x.Status == Estados.CANCEL).Count();
+
+                                    
+                                    txtSubidos.Text = result.ToString();
+                                    txtError.Text = resultERROR.ToString();
+                                    txtErrornet.Text = resultNET.ToString();
+                                    txtErrorName.Text = resultNAME.ToString();
+                                    txtErrorSize.Text = resultSIZE.ToString();
+                                    txtCancelados.Text = resultCANCEL.ToString();
+                                    /*
                                     txtmsgSubidos.Text = $"{result} subidos exitosos," +
                                                          $" {resultERROR} con error" +
                                                          $" {resultNET} con Error de red" +
                                                          $" {resultNAME} con Mal nombre" +
                                                          $" {resultSIZE} con Mal tamaño" +
                                                          $" {resultCANCEL} Cancelados" ;
+                                    */
                                 });
                             });
 
@@ -283,6 +293,9 @@ namespace ConsolidadorHDD
         }
 
         private void Filtrar() {
+
+            var DiscLeter = txtLetraDisco.Text;
+
             var filterFilter = HDDDataWin
                         .Join(_extencionSelection,
                             o1 => o1.Extension,
@@ -298,6 +311,13 @@ namespace ConsolidadorHDD
             {
                 try
                 {
+                    string fullPath = item.Directorios;
+                    string driveRoot = Path.GetPathRoot(fullPath);
+                    if (DiscLeter.ToUpper() != driveRoot.ToUpper()) {
+                        item.Directorios = item.Directorios.Replace(driveRoot, DiscLeter);
+                    }
+
+
                     FilesToUpload.Add(new FileUploadProgress
                     {
                         FileName = item.Nombre, // hdd.Nombre, // Obtener solo el nombre del archivo
@@ -323,6 +343,8 @@ namespace ConsolidadorHDD
             var cuantosSeleccionados = FilesToUpload.Count();
             var pesoTotal = FilesToUpload.Sum(x => x.TotalBytes);
             txtMensaje.Text = $"{cuantosSeleccionados} Archivos seleccionados, {FileSizeExtension.ToHumanReadableString(pesoTotal)}.";
+            txtTodos.Text = cuantosSeleccionados.ToString();
+        
         }
 
 
@@ -343,6 +365,7 @@ namespace ConsolidadorHDD
 
         private async void btnSubir_Click(object sender, RoutedEventArgs e)
         {
+            Intentos = 0;
             btnSubir.IsEnabled = false;
             btnSubir.Visibility = Visibility.Hidden;
             btnCancelarSubir.Visibility = Visibility.Visible;
@@ -351,23 +374,27 @@ namespace ConsolidadorHDD
                 MessageBox.Show("El maximo numero de intentos tiene que ser un numero entero", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            int intento = 1;
+            //int intento = 1;
             await UploadFilesProcess();
-            while (intento < maxRetry)
+            
+            while (Intentos < maxRetry)
             {
+                txtOverallStatus.Text = $"Reintentando intento {Intentos}";
                 await UploadFilesProcess(true);
-                intento++;
+                Intentos++;
             }
-
+            txtOverallStatus.Text = $"Proceso terminado intentos:{Intentos}";
 
             btnSubir.IsEnabled = true;
             btnSubir.Visibility = Visibility.Visible;
             btnCancelarSubir.Visibility = Visibility.Hidden;
 
+
         }
 
         private void btnCancelarSubir_Click(object sender, RoutedEventArgs e)
         {
+            Intentos = 200000000;
             CancelUploads();
             var total = FilesToUpload.Count();
             var result = FilesToUpload.Where(x => x.Status == Estados.SUCCESS).Count();
@@ -379,6 +406,7 @@ namespace ConsolidadorHDD
             {
                 btnReSubir.Visibility = Visibility.Hidden;
             }
+            txtOverallStatus.Text = $"Proceso cancelado";
 
             Debug.WriteLine("--------------------------------------------------");
             Debug.WriteLine("Cancelar proceso");
